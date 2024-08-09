@@ -27,7 +27,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-west-2'}
+  region: ${opt:region, 'us-east-1'}
   profile: default
   tracing:
     lambda: true
@@ -210,6 +210,13 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
